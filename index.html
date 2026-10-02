@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Tugas 1 — Pengantar Analisis Data Kategori</title>
+<title>Tugas 3 — Uji Chi-Square</title>
 <style>
 
 span.smallcaps{font-variant: small-caps;}
@@ -2394,8 +2394,8 @@ margin-bottom: 0;
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Tugas 1 — Pengantar Analisis Data Kategori</h1>
-            <p class="subtitle lead">Latihan Analisis Data dengan R dan Quarto</p>
+      <h1 class="title">Tugas 3 — Uji Chi-Square</h1>
+            <p class="subtitle lead">Observed vs Expected, Test of Independence, Diagnosis Asumsi, dan Pearson Residual</p>
                       </div>
   </div>
     
@@ -2414,13 +2414,17 @@ margin-bottom: 0;
     <h2 id="toc-title">Daftar Isi</h2>
    
   <ul class="collapse">
-  <li><a href="#mengenali-data" id="toc-mengenali-data" class="nav-link active" data-scroll-target="#mengenali-data"><span class="header-section-number">1</span> 1. Mengenali Data</a></li>
-  <li><a href="#menyiapkan-data-kategori" id="toc-menyiapkan-data-kategori" class="nav-link" data-scroll-target="#menyiapkan-data-kategori"><span class="header-section-number">2</span> 2. Menyiapkan Data Kategori</a></li>
-  <li><a href="#quality-control-awal" id="toc-quality-control-awal" class="nav-link" data-scroll-target="#quality-control-awal"><span class="header-section-number">3</span> 3. Quality Control Awal</a></li>
-  <li><a href="#frekuensi-dan-proporsi" id="toc-frekuensi-dan-proporsi" class="nav-link" data-scroll-target="#frekuensi-dan-proporsi"><span class="header-section-number">4</span> 4. Frekuensi dan Proporsi</a></li>
-  <li><a href="#tabel-silang" id="toc-tabel-silang" class="nav-link" data-scroll-target="#tabel-silang"><span class="header-section-number">5</span> 5. Tabel Silang</a></li>
-  <li><a href="#visualisasi-kategorik" id="toc-visualisasi-kategorik" class="nav-link" data-scroll-target="#visualisasi-kategorik"><span class="header-section-number">6</span> 6. Visualisasi Kategorik</a></li>
-  <li><a href="#kesimpulan" id="toc-kesimpulan" class="nav-link" data-scroll-target="#kesimpulan"><span class="header-section-number">7</span> 7. Kesimpulan</a></li>
+  <li><a href="#menentukan-jenis-uji-dan-hipotesis" id="toc-menentukan-jenis-uji-dan-hipotesis" class="nav-link active" data-scroll-target="#menentukan-jenis-uji-dan-hipotesis"><span class="header-section-number">1</span> 1. Menentukan Jenis Uji dan Hipotesis</a></li>
+  <li><a href="#menyiapkan-faktor-dan-tabel-observed" id="toc-menyiapkan-faktor-dan-tabel-observed" class="nav-link" data-scroll-target="#menyiapkan-faktor-dan-tabel-observed"><span class="header-section-number">2</span> 2. Menyiapkan Faktor dan Tabel Observed</a></li>
+  <li><a href="#expected-count-dan-uji-chi-square" id="toc-expected-count-dan-uji-chi-square" class="nav-link" data-scroll-target="#expected-count-dan-uji-chi-square"><span class="header-section-number">3</span> 3. Expected Count dan Uji Chi-Square</a>
+  <ul class="collapse">
+  <li><a href="#hitung-satu-expected-count-secara-manual" id="toc-hitung-satu-expected-count-secara-manual" class="nav-link" data-scroll-target="#hitung-satu-expected-count-secara-manual"><span class="header-section-number">3.1</span> 3.1 Hitung satu expected count secara manual</a></li>
+  <li><a href="#hitung-kontribusi-χ²-dari-sel-tersebut" id="toc-hitung-kontribusi-χ²-dari-sel-tersebut" class="nav-link" data-scroll-target="#hitung-kontribusi-χ²-dari-sel-tersebut"><span class="header-section-number">3.2</span> 3.2 Hitung kontribusi χ² dari sel tersebut</a></li>
+  <li><a href="#jalankan-uji-chi-square-di-r" id="toc-jalankan-uji-chi-square-di-r" class="nav-link" data-scroll-target="#jalankan-uji-chi-square-di-r"><span class="header-section-number">3.3</span> 3.3 Jalankan Uji Chi-Square di R</a></li>
+  </ul></li>
+  <li><a href="#diagnosis-asumsi-dan-pearson-residual" id="toc-diagnosis-asumsi-dan-pearson-residual" class="nav-link" data-scroll-target="#diagnosis-asumsi-dan-pearson-residual"><span class="header-section-number">4</span> 4. Diagnosis Asumsi dan Pearson Residual</a></li>
+  <li><a href="#fisher-sebagai-alternatif" id="toc-fisher-sebagai-alternatif" class="nav-link" data-scroll-target="#fisher-sebagai-alternatif"><span class="header-section-number">5</span> 5. Fisher sebagai Alternatif</a></li>
+  <li><a href="#pelaporan-dan-kesimpulan" id="toc-pelaporan-dan-kesimpulan" class="nav-link" data-scroll-target="#pelaporan-dan-kesimpulan"><span class="header-section-number">6</span> 6. Pelaporan dan Kesimpulan</a></li>
   </ul>
 </nav>
 </div>
@@ -2447,11 +2451,11 @@ margin-bottom: 0;
 <p>Kode Tugas</p>
 </div>
 <div class="value">
-<p>ADK1-070181AE</p>
+<p>ADK3-0A7E8CC7</p>
 </div>
 </div>
 <div class="learning-box">
-<p><strong>Tujuan tugas.</strong> Gunakan kembali konsep dan fungsi R yang telah dibahas pada Pertemuan 1 untuk mengenali struktur data kategori, membuat ringkasan deskriptif, memvisualisasikan data, dan menjelaskan insight secara hati-hati.</p>
+<p><strong>Tujuan tugas.</strong> Mengubah pola deskriptif menjadi keputusan inferensial dengan Uji Chi-Square, memeriksa <em>expected count</em>, membaca Pearson residual, dan menulis kesimpulan tanpa klaim kausalitas.</p>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2463,404 +2467,40 @@ margin-bottom: 0;
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Ikuti pola kelas: <strong>predict → run → inspect → explain</strong>.</p>
-<p>Pada setiap bagian diberikan <strong>sedikit petunjuk kode</strong>.<br>
-Jika diminta menjelaskan atau menuliskan interpretasi, gunakan kotak <strong>Jawaban Anda</strong> yang telah disediakan.</p>
+<p><strong>predict → calculate → run → diagnose → explain</strong></p>
 </div>
 </div>
-<section id="mengenali-data" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> 1. Mengenali Data</h1>
-<p>Gunakan R untuk melihat beberapa baris awal, struktur data, dan nama variabel.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Petunjuk kode
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(...)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(...)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(...)</span></code></pre></div>
-<p>Ganti <code>...</code> dengan objek data yang digunakan.</p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_tugas1_241061003)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 9
-  RecordID ProgramStudi     Gender DeviceUtama ModaBelajar Kepuasan  
-     &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;     
-1   493003 Sistem Informasi L      Smartphone  Diskusi     Cukup     
-2   130048 Matematika       L      Tablet      Praktik     Tidak Puas
-3   397022 Matematika       P      Laptop      Praktik     Puas      
-4   753034 Matematika       L      Smartphone  Diskusi     Puas      
-5   193989 Sains Data       P      Laptop      Video       Puas      
-6   324820 Sains Aktuaria   P      Laptop      Diskusi     Puas      
-# ℹ 3 more variables: IntensitasBelajar &lt;chr&gt;, DurasiBelajarJam &lt;dbl&gt;,
-#   PaketID &lt;chr&gt;</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data_tugas1_241061003)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>spc_tbl_ [100 × 9] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
- $ RecordID         : num [1:100] 493003 130048 397022 753034 193989 ...
- $ ProgramStudi     : chr [1:100] &quot;Sistem Informasi&quot; &quot;Matematika&quot; &quot;Matematika&quot; &quot;Matematika&quot; ...
- $ Gender           : chr [1:100] &quot;L&quot; &quot;L&quot; &quot;P&quot; &quot;L&quot; ...
- $ DeviceUtama      : chr [1:100] &quot;Smartphone&quot; &quot;Tablet&quot; &quot;Laptop&quot; &quot;Smartphone&quot; ...
- $ ModaBelajar      : chr [1:100] &quot;Diskusi&quot; &quot;Praktik&quot; &quot;Praktik&quot; &quot;Diskusi&quot; ...
- $ Kepuasan         : chr [1:100] &quot;Cukup&quot; &quot;Tidak Puas&quot; &quot;Puas&quot; &quot;Puas&quot; ...
- $ IntensitasBelajar: chr [1:100] &quot;Sedang&quot; &quot;Sedang&quot; &quot;Tinggi&quot; &quot;Tinggi&quot; ...
- $ DurasiBelajarJam : num [1:100] 8.9 4.5 11.9 11.5 8.4 10.6 11 5.3 10.5 1.8 ...
- $ PaketID          : chr [1:100] &quot;ADK1-070181AE&quot; &quot;ADK1-070181AE&quot; &quot;ADK1-070181AE&quot; &quot;ADK1-070181AE&quot; ...
- - attr(*, &quot;spec&quot;)=
-  .. cols(
-  ..   RecordID = col_double(),
-  ..   ProgramStudi = col_character(),
-  ..   Gender = col_character(),
-  ..   DeviceUtama = col_character(),
-  ..   ModaBelajar = col_character(),
-  ..   Kepuasan = col_character(),
-  ..   IntensitasBelajar = col_character(),
-  ..   DurasiBelajarJam = col_double(),
-  ..   PaketID = col_character()
-  .. )
- - attr(*, &quot;problems&quot;)=&lt;pointer: 0x000001ae90cffb00&gt; </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data_tugas1_241061003)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;RecordID&quot;          &quot;ProgramStudi&quot;      &quot;Gender&quot;           
-[4] &quot;DeviceUtama&quot;       &quot;ModaBelajar&quot;       &quot;Kepuasan&quot;         
-[7] &quot;IntensitasBelajar&quot; &quot;DurasiBelajarJam&quot;  &quot;PaketID&quot;          </code></pre>
-</div>
-</div>
-<p>Lengkapi tabel berikut.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Variabel</th>
-<th>Jenis Variabel</th>
-<th>Alasan Singkat</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>RecordID</td>
-<td>Identifier</td>
-<td>Angka unik per responden, hanya penanda baris, tidak dianalisis sebagai nilai</td>
-</tr>
-<tr class="even">
-<td>ProgramStudi</td>
-<td>Nominal</td>
-<td>Kategori nama program studi (Sistem Informasi, Matematika, Sains Data, Sains Aktuaria), tidak punya urutan</td>
-</tr>
-<tr class="odd">
-<td>Gender</td>
-<td>Nominal</td>
-<td>Kategori L/P, tidak punya urutan tingkatan</td>
-</tr>
-<tr class="even">
-<td>DeviceUtama</td>
-<td>Nominal</td>
-<td>Kategori perangkat (Smartphone, Tablet, Laptop), tidak punya urutan alami</td>
-</tr>
-<tr class="odd">
-<td>ModaBelajar</td>
-<td>Nominal</td>
-<td>Kategori cara belajar (Diskusi, Praktik, Video, Buku), tidak punya urutan alami</td>
-</tr>
-<tr class="even">
-<td>Kepuasan</td>
-<td>Ordinal</td>
-<td>Punya tingkatan jelas: Tidak Puas &lt; Cukup &lt; Puas &lt; Sangat Puas</td>
-</tr>
-<tr class="odd">
-<td>IntensitasBelajar</td>
-<td>Ordinal</td>
-<td>Punya tingkatan: Rendah &lt; Sedang &lt; Tinggi</td>
-</tr>
-<tr class="even">
-<td>DurasiBelajarJam</td>
-<td>Numerik (rasio)</td>
-<td>Berupa angka jam belajar (desimal), bisa dijumlah/dirata-ratakan secara bermakna</td>
-</tr>
-<tr class="odd">
-<td>PaketID</td>
-<td>Identifier</td>
-<td>Kode paket tugas (sama untuk semua baris), bukan variabel analisis</td>
-</tr>
-</tbody>
-</table>
-<p>Jawab singkat:</p>
-<ol type="1">
-<li>Variabel mana yang merupakan identifier?</li>
-<li>Variabel mana yang bersifat ordinal?</li>
-<li>Mengapa kode angka belum tentu berarti data numerik?</li>
-</ol>
-<div class="answer-box">
-<p><strong>Jawaban Anda</strong></p>
-<ol type="1">
-<li><code>RecordID</code> (dan <code>PaketID</code>) merupakan identifier karena hanya berfungsi sebagai penanda unik/label administratif tiap responden, bukan variabel yang dianalisis.</li>
-<li><code>Kepuasan</code> dan <code>IntensitasBelajar</code> bersifat ordinal karena kategorinya memiliki urutan tingkatan yang bermakna (Tidak Puas &lt; Cukup &lt; Puas &lt; Sangat Puas; Rendah &lt; Sedang &lt; Tinggi).</li>
-<li>Kode angka pada data kategori (mis. <code>RecordID</code> yang berupa deretan angka) hanya berfungsi sebagai label/identitas, bukan besaran matematis. Jika angka semacam itu dijumlahkan atau dirata-ratakan, hasilnya tidak punya arti karena angkanya tidak merepresentasikan kuantitas, hanya penanda.</li>
-</ol>
-</div>
-</section>
-<section id="menyiapkan-data-kategori" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> 2. Menyiapkan Data Kategori</h1>
-<p>Variabel latihan Anda:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Nominal :&quot;</span>, identitas<span class="sc">$</span>nominal_utama[<span class="dv">1</span>], <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Nominal : Gender </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Ordinal :&quot;</span>, identitas<span class="sc">$</span>ordinal_utama[<span class="dv">1</span>], <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Ordinal : Kepuasan </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Urutan  :&quot;</span>, identitas<span class="sc">$</span>urutan_ordinal[<span class="dv">1</span>], <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Urutan  : Tidak Puas|Cukup|Puas|Sangat Puas </code></pre>
-</div>
-</div>
-<p>Lakukan hal berikut:</p>
-<ol type="1">
-<li>ubah variabel nominal menjadi factor;</li>
-<li>ubah variabel ordinal menjadi ordered factor;</li>
-<li>periksa level kategorinya.</li>
-</ol>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Petunjuk kode
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Untuk nominal:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(...)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(...)</span></code></pre></div>
-<p>Untuk ordinal:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(..., <span class="at">levels =</span> ..., <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>nominal_var <span class="ot">&lt;-</span> identitas<span class="sc">$</span>nominal_utama[<span class="dv">1</span>]</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ordinal_var <span class="ot">&lt;-</span> identitas<span class="sc">$</span>ordinal_utama[<span class="dv">1</span>]</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>urutan <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(identitas<span class="sc">$</span>urutan_ordinal[<span class="dv">1</span>], <span class="st">&quot;</span><span class="sc">\\</span><span class="st">|&quot;</span>)[[<span class="dv">1</span>]]</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Tulis kode Anda di bawah ini</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Mengubah variabel nominal menjadi factor</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>data_tugas1_241061003[[nominal_var]] <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  data_tugas1_241061003[[nominal_var]]</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Mengubah variabel ordinal menjadi ordered factor</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>data_tugas1_241061003[[ordinal_var]] <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  data_tugas1_241061003[[ordinal_var]],</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> urutan,</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">ordered =</span> <span class="cn">TRUE</span></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Memeriksa level kategori</span></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(data_tugas1_241061003[[nominal_var]])</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;L&quot; &quot;P&quot;</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(data_tugas1_241061003[[ordinal_var]])</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;Tidak Puas&quot;  &quot;Cukup&quot;       &quot;Puas&quot;        &quot;Sangat Puas&quot;</code></pre>
-</div>
-</div>
-<p>Tuliskan satu kalimat: <strong>mengapa urutan level ordinal perlu ditetapkan dengan benar?</strong></p>
-<div class="answer-box">
-<p><strong>Jawaban Anda</strong></p>
-<p>Urutan level ordinal perlu ditetapkan dengan benar agar R dapat membandingkan kategori secara logis (mis. “Puas” &gt; “Cukup”), sehingga hasil pengurutan, perbandingan, dan visualisasi mencerminkan tingkatan yang sesungguhnya, bukan urutan alfabet atau urutan kemunculan data</p>
-</div>
-</section>
-<section id="quality-control-awal" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> 3. Quality Control Awal</h1>
-<p>Lakukan pemeriksaan sederhana terhadap:</p>
+<section id="menentukan-jenis-uji-dan-hipotesis" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> 1. Menentukan Jenis Uji dan Hipotesis</h1>
+<p>Kasus utama pada tugas ini menggunakan dua variabel kategorik:</p>
 <ul>
-<li>struktur data;</li>
-<li>level/kategori;</li>
-<li>missing value;</li>
-<li>konsistensi penulisan kategori.</li>
+<li><code>PengalamanCoding</code></li>
+<li><code>ToolFavorit</code></li>
 </ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Petunjuk kode
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Beberapa pola fungsi yang dapat digunakan:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(...)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(...)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(...)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(...)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(...)</span></code></pre></div>
-<p>Pilih fungsi yang sesuai dengan tujuan pemeriksaan Anda.</p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Struktur data</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data_tugas1_241061003)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>spc_tbl_ [100 × 9] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
- $ RecordID         : num [1:100] 493003 130048 397022 753034 193989 ...
- $ ProgramStudi     : chr [1:100] &quot;Sistem Informasi&quot; &quot;Matematika&quot; &quot;Matematika&quot; &quot;Matematika&quot; ...
- $ Gender           : Factor w/ 2 levels &quot;L&quot;,&quot;P&quot;: 1 1 2 1 2 2 2 1 1 1 ...
- $ DeviceUtama      : chr [1:100] &quot;Smartphone&quot; &quot;Tablet&quot; &quot;Laptop&quot; &quot;Smartphone&quot; ...
- $ ModaBelajar      : chr [1:100] &quot;Diskusi&quot; &quot;Praktik&quot; &quot;Praktik&quot; &quot;Diskusi&quot; ...
- $ Kepuasan         : Ord.factor w/ 4 levels &quot;Tidak Puas&quot;&lt;&quot;Cukup&quot;&lt;..: 2 1 3 3 3 3 2 3 2 2 ...
- $ IntensitasBelajar: chr [1:100] &quot;Sedang&quot; &quot;Sedang&quot; &quot;Tinggi&quot; &quot;Tinggi&quot; ...
- $ DurasiBelajarJam : num [1:100] 8.9 4.5 11.9 11.5 8.4 10.6 11 5.3 10.5 1.8 ...
- $ PaketID          : chr [1:100] &quot;ADK1-070181AE&quot; &quot;ADK1-070181AE&quot; &quot;ADK1-070181AE&quot; &quot;ADK1-070181AE&quot; ...
- - attr(*, &quot;spec&quot;)=
-  .. cols(
-  ..   RecordID = col_double(),
-  ..   ProgramStudi = col_character(),
-  ..   Gender = col_character(),
-  ..   DeviceUtama = col_character(),
-  ..   ModaBelajar = col_character(),
-  ..   Kepuasan = col_character(),
-  ..   IntensitasBelajar = col_character(),
-  ..   DurasiBelajarJam = col_double(),
-  ..   PaketID = col_character()
-  .. )
- - attr(*, &quot;problems&quot;)=&lt;pointer: 0x000001ae90cffb00&gt; </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Level/kategori variabel nominal dan ordinal</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(data_tugas1_241061003[[nominal_var]])</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;L&quot; &quot;P&quot;</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(data_tugas1_241061003[[ordinal_var]])</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;Tidak Puas&quot;  &quot;Cukup&quot;       &quot;Puas&quot;        &quot;Sangat Puas&quot;</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Kategori unik</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(data_tugas1_241061003[[nominal_var]])</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] L P
-Levels: L P</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(data_tugas1_241061003[[ordinal_var]])</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] Cukup       Tidak Puas  Puas        Sangat Puas &lt;NA&gt;       
-Levels: Tidak Puas &lt; Cukup &lt; Puas &lt; Sangat Puas</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Missing value setiap kolom</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(data_tugas1_241061003))</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>         RecordID      ProgramStudi            Gender       DeviceUtama 
-                0                 0                 0                 0 
-      ModaBelajar          Kepuasan IntensitasBelajar  DurasiBelajarJam 
-                0                 2                 0                 1 
-          PaketID 
-                0 </code></pre>
-</div>
-</div>
-<p>Tuliskan <strong>dua temuan singkat</strong> dari pemeriksaan tersebut.</p>
-<div class="answer-box">
-<p><strong>Jawaban Anda</strong></p>
-<ol type="1">
-<li>Variabel nominal memiliki dua kategori, yaitu <strong>L</strong> dan <strong>P</strong>, sedangkan variabel ordinal memiliki empat kategori dengan urutan <strong>Tidak Puas &lt; Cukup &lt; Puas &lt; Sangat Puas</strong>. Hasil pemeriksaan menunjukkan bahwa kategori pada kedua variabel telah tersimpan sesuai tipe kategorinya.</li>
-<li>Terdapat <strong>3 missing value</strong> pada dataset, yaitu <strong>2 missing value pada variabel Kepuasan</strong> dan <strong>1 missing value pada variabel DurasiBelajarJam</strong>. Pada variabel ordinal juga terlihat adanya nilai <code>NA</code> pada hasil pemeriksaan kategori unik, yang menunjukkan adanya data kepuasan yang kosong.</li>
-</ol>
-</div>
-</section>
-<section id="frekuensi-dan-proporsi" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> 4. Frekuensi dan Proporsi</h1>
-<p>Sebelum menjalankan kode, prediksi:</p>
+<p>Pertanyaan penelitian:</p>
 <blockquote class="blockquote">
-<p>Menurut Anda, kategori mana yang paling banyak muncul pada variabel nominal Anda?</p>
+<p><strong>Apakah tool analitik favorit berasosiasi dengan tingkat pengalaman coding mahasiswa?</strong></p>
 </blockquote>
-<div class="answer-box">
-<p><strong>Prediksi Anda</strong></p>
-<p>Saya memprediksi bahwa kategori <strong>L</strong> akan menjadi kategori yang paling banyak muncul pada variabel nominal.</p>
-</div>
-<p>Setelah itu, buat:</p>
-<ul>
-<li>tabel frekuensi untuk variabel nominal;</li>
-<li>proporsi untuk variabel ordinal.</li>
-</ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Petunjuk kode
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(...)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(...)</span></code></pre></div>
-<p>Anda dapat menyimpan hasil <code>table()</code> ke sebuah objek terlebih dahulu sebelum menghitung proporsi.</p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabel frekuensi variabel nominal</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>freq_nominal <span class="ot">&lt;-</span> <span class="fu">table</span>(data_tugas1_241061003[[nominal_var]])</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>freq_nominal</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
- L  P 
-51 49 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Proporsi variabel ordinal</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>prop_ordinal <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>(data_tugas1_241061003[[ordinal_var]])</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>prop_ordinal <span class="sc">*</span> <span class="dv">100</span></span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
- Tidak Puas       Cukup        Puas Sangat Puas 
-   10.20408    23.46939    33.67347    32.65306 </code></pre>
-</div>
-</div>
-<p>Tuliskan <strong>dua kalimat insight</strong> berdasarkan output.</p>
-<div class="answer-box">
-<p><strong>Interpretasi Anda</strong></p>
+<p>Jawab pertanyaan berikut.</p>
 <ol type="1">
-<li>Kategori <strong>L</strong> merupakan kategori yang paling banyak muncul pada variabel nominal dengan frekuensi <strong>51 data (51%)</strong>, sedangkan kategori P sebanyak <strong>49 data (49%)</strong>.</li>
-<li>Pada variabel ordinal, kategori <strong>Puas</strong> memiliki proporsi paling tinggi yaitu <strong>33,67%</strong>, diikuti oleh <strong>Sangat Puas sebesar 32,65%</strong>, <strong>Cukup sebesar 23,47%</strong>, dan <strong>Tidak Puas sebesar 10,20%</strong>.</li>
+<li>Apakah kasus ini termasuk <strong>Goodness of Fit</strong> atau <strong>Test of Independence</strong>?</li>
+<li>Tuliskan H₀.</li>
+<li>Tuliskan H₁.</li>
+<li>Mengapa hasil uji ini tidak boleh langsung ditafsirkan sebagai hubungan sebab-akibat?</li>
+</ol>
+<div class="answer-box">
+<p><strong>Jawaban Anda</strong></p>
+<ol type="1">
+<li>Kasus ini termasuk Test of Independence, karena digunakan untuk menguji apakah terdapat asosiasi antara dua variabel kategorik, yaitu <code>PengalamanCoding</code> dan <code>ToolFavorit</code>.</li>
+<li><strong>H₀:</strong> Tidak terdapat asosiasi antara tingkat pengalaman coding mahasiswa dan tool analitik favorit. Dengan kata lain, kedua variabel tersebut saling independen.</li>
+<li><strong>H₁:</strong> Terdapat asosiasi antara tingkat pengalaman coding mahasiswa dan tool analitik favorit. Dengan kata lain, kedua variabel tersebut tidak saling independen.</li>
+<li>Hasil uji tidak boleh langsung ditafsirkan sebagai hubungan sebab-akibat karena Uji Chi-Square hanya menunjukkan ada atau tidaknya asosiasi antara dua variabel kategorik. Hasil tersebut tidak membuktikan bahwa tingkat pengalaman coding menyebabkan seseorang memilih tool tertentu atau sebaliknya.</li>
 </ol>
 </div>
 </section>
-<section id="tabel-silang" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> 5. Tabel Silang</h1>
-<p>Pasangan variabel Anda:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> identitas<span class="sc">$</span>tab_baris[<span class="dv">1</span>]</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> identitas<span class="sc">$</span>tab_kolom[<span class="dv">1</span>]</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Baris :&quot;</span>, x, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Baris : Gender </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Kolom :&quot;</span>, y, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Kolom : ModaBelajar </code></pre>
-</div>
-</div>
-<p>Buat tabel silang untuk kedua variabel tersebut.</p>
-<p>Jika diperlukan, tampilkan proporsi per baris untuk membantu membaca pola.</p>
+<section id="menyiapkan-faktor-dan-tabel-observed" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> 2. Menyiapkan Faktor dan Tabel Observed</h1>
+<p>Atur urutan kategori agar sesuai dengan konteks analisis.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2871,52 +2511,291 @@ Levels: Tidak Puas &lt; Cukup &lt; Puas &lt; Sangat Puas</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(..., ...)</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(..., <span class="at">margin =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p>Lengkapi sendiri objek yang diperlukan.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>PengalamanCoding <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>PengalamanCoding,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Pemula&quot;</span>, <span class="st">&quot;Menengah&quot;</span>, <span class="st">&quot;Lanjut&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>ToolFavorit <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>ToolFavorit,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Python&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;SQL&quot;</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(..., ...)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(tab)</span></code></pre></div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # Menentukan variabel tabel silang</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> identitas<span class="sc">$</span>tab_baris[<span class="dv">1</span>]</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> identitas<span class="sc">$</span>tab_kolom[<span class="dv">1</span>]</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Baris :&quot;</span>, x, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>PengalamanCoding <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>PengalamanCoding,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Pemula&quot;</span>, <span class="st">&quot;Menengah&quot;</span>, <span class="st">&quot;Lanjut&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>ToolFavorit <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>ToolFavorit,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Python&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;SQL&quot;</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(data<span class="sc">$</span>PengalamanCoding, data<span class="sc">$</span>ToolFavorit)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>tab</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Baris : Gender </code></pre>
+<pre><code>          
+           Python  R SQL
+  Pemula       16 21  13
+  Menengah     32 16  11
+  Lanjut       34  3  10</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Kolom :&quot;</span>, y, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(tab)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Kolom : ModaBelajar </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Membuat tabel silang</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>tab_silang <span class="ot">&lt;-</span> <span class="fu">table</span>(</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  data_tugas1_241061003[[x]],</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  data_tugas1_241061003[[y]]</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Menampilkan tabel frekuensi</span></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>tab_silang</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   
-    Buku Diskusi Praktik Video
-  L    5      15      19    12
-  P   12      11      10    16</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Menampilkan proporsi per baris</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>proporsi_baris <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(tab_silang, <span class="at">margin =</span> <span class="dv">1</span>)</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(proporsi_baris <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   
-     Buku Diskusi Praktik Video
-  L  9.80   29.41   37.25 23.53
-  P 24.49   22.45   20.41 32.65</code></pre>
+<pre><code>          
+           Python   R SQL Sum
+  Pemula       16  21  13  50
+  Menengah     32  16  11  59
+  Lanjut       34   3  10  47
+  Sum          82  40  34 156</code></pre>
 </div>
 </div>
-<p>Tuliskan <strong>satu kalimat</strong> yang menjelaskan pola yang tampak.</p>
+<p>Sebelum menjalankan uji, jawab:</p>
+<ol type="1">
+<li>Berapa dimensi tabel kontingensi?</li>
+<li>Berapa <em>grand total</em> observasi?</li>
+<li>Menurut pengamatan awal terhadap tabel, apakah Anda menduga ada pola perbedaan tool favorit antar tingkat pengalaman? Jelaskan singkat.</li>
+</ol>
 <div class="answer-box">
-<p><strong>Interpretasi Anda</strong></p>
-<p>Pada kategori <strong>L</strong>, moda belajar yang paling banyak digunakan adalah <strong>Praktik sebesar 37,25%</strong>, sedangkan pada kategori <strong>P</strong>, moda belajar yang paling banyak digunakan adalah <strong>Video sebesar 32,65%</strong></p>
+<p><strong>Prediksi awal</strong></p>
+<ol type="1">
+<li>Tabel kontingensi memiliki dimensi 3 x 3, yaitu tiga kategori pengalaman coding dan tiga kategori tool favorit.</li>
+<li><em>Grand total</em> observasi adalah 156 mahasiswa.</li>
+<li>Berdasarkan pengamatan awal, terdapat pola perbedaan tool favorit antar tingkat pengalaman coding. Misalnya, kelompok Lanjut memiliki 34 pengguna Python dan hanya 3 pengguna R, sedangkan kelompok Pemula memiliki 21 pengguna R. Hal ini memberikan dugaan awal bahwa distribusi tool favorit berbeda menurut tingkat pengalaman coding.</li>
+</ol>
+</div>
+</section>
+<section id="expected-count-dan-uji-chi-square" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> 3. Expected Count dan Uji Chi-Square</h1>
+<section id="hitung-satu-expected-count-secara-manual" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="hitung-satu-expected-count-secara-manual"><span class="header-section-number">3.1</span> 3.1 Hitung satu expected count secara manual</h2>
+<p>Pilih satu sel pada tabel kontingensi. Gunakan rumus:</p>
+<p>[ E_{ij} = ]</p>
+<p>Tuliskan sel yang dipilih, nilai observed, total baris, total kolom, grand total, dan hasil expected count.</p>
+<div class="answer-box">
+<p><strong>Perhitungan manual expected</strong></p>
+<ul>
+<li>Sel yang dipilih: <strong>Pemula × R</strong>.</li>
+<li>rved (O): 21</li>
+<li>Total baris: 50</li>
+<li>Total kolom: 40</li>
+<li>(N): 156</li>
+<li>Expected (E): E: 12.8205</li>
+</ul>
+</div>
+</section>
+<section id="hitung-kontribusi-χ²-dari-sel-tersebut" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="hitung-kontribusi-χ²-dari-sel-tersebut"><span class="header-section-number">3.2</span> 3.2 Hitung kontribusi χ² dari sel tersebut</h2>
+<p>Gunakan:</p>
+<p>[ ]</p>
+<div class="answer-box">
+<p><strong>Kontribusi χ² sel</strong></p>
+<p>Kontribusi sel <strong>Pemula × R</strong> terhadap statistik Chi-Square adalah sekitar: 5.2185</p>
+</div>
+</section>
+<section id="jalankan-uji-chi-square-di-r" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="jalankan-uji-chi-square-di-r"><span class="header-section-number">3.3</span> 3.3 Jalankan Uji Chi-Square di R</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Petunjuk kode
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>hasil <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(...)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>hasil</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>hasil<span class="sc">$</span>expected</span></code></pre></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>hasil <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(tab)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>hasil</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson&#39;s Chi-squared test
+
+data:  tab
+X-squared = 20.298, df = 4, p-value = 0.0004361</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>hasil<span class="sc">$</span>expected</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          
+             Python        R      SQL
+  Pemula   26.28205 12.82051 10.89744
+  Menengah 31.01282 15.12821 12.85897
+  Lanjut   24.70513 12.05128 10.24359</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(hasil<span class="sc">$</span>expected)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10.24359</code></pre>
+</div>
+</div>
+<p>Catat:</p>
+<ol type="1">
+<li>nilai χ²;</li>
+<li>derajat kebebasan (<em>df</em>);</li>
+<li><em>p-value</em>;</li>
+<li>minimum expected count.</li>
+</ol>
+<div class="answer-box">
+<p><strong>Hasil uji</strong></p>
+<ol type="1">
+<li>χ² = 20.298</li>
+<li>df = 4</li>
+<li>p-value = 0.0004361</li>
+<li>minimum expected = 10.24359</li>
+</ol>
+</div>
+<p>Bandingkan expected count manual Anda dengan sel yang sama pada <code>hasil$expected</code>.</p>
+<div class="answer-box">
+<p><strong>Pemeriksaan</strong></p>
+<p>Nilai expected count manual pada sel <strong>Pemula x R</strong>, yaitu 12.8205, sama dengan nilai pada <code>hasil$expected</code> untuk sel yang sama. Dengan demikiam, perhitungan manual sesuai dengan hasil yang di hitung oleh R.</p>
+</div>
+</section>
+</section>
+<section id="diagnosis-asumsi-dan-pearson-residual" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> 4. Diagnosis Asumsi dan Pearson Residual</h1>
+<p>Sebelum mempercayai <em>p-value</em>, lakukan diagnosis.</p>
+<p>Jawab:</p>
+<ol type="1">
+<li>Apakah input yang digunakan berupa <strong>count/frekuensi</strong>, bukan persentase?</li>
+<li>Berdasarkan minimum expected count, apakah pendekatan Chi-Square layak digunakan?</li>
+<li>Mengapa independensi antarobservasi penting pada uji ini?</li>
+</ol>
+<div class="answer-box">
+<p><strong>Diagnosis asumsi</strong></p>
+<ol type="1">
+<li>Input yang digunakan berupa <strong>count/frekuensi</strong>, bukan persentase. Setiap sel pada tabel berisi jumlah mahasiswa dalam kombinasi kategori pengalaman coding dan tool favorit.</li>
+<li>Pendekatan Chi-Square layak digunakan karena <strong>minimum expected count = 10,2436</strong>, sehingga seluruh expected count berada di atas 5. Dengan demikian, tidak terdapat expected count yang sangat rendah.</li>
+<li>Independensi antarobservasi penting karena setiap observasi seharusnya memberikan satu kontribusi yang tidak bergantung pada observasi lainnya. Dalam konteks ini, setiap mahasiswa seharusnya dihitung satu kali sehingga frekuensi antarobservasi tidak saling bergantung.</li>
+</ol>
+</div>
+<p>Sekarang periksa Pearson residual.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Petunjuk kode
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>resid <span class="ot">&lt;-</span> hasil<span class="sc">$</span>residuals</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>resid</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># cari residual absolut terbesar</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>(resid)</span></code></pre></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>resid <span class="ot">&lt;-</span> hasil<span class="sc">$</span>residuals</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>resid</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          
+                Python           R         SQL
+  Pemula   -2.00562686  2.28440645  0.63692322
+  Menengah  0.17726602  0.22414064 -0.51840626
+  Lanjut    1.87003549 -2.60731482 -0.07610846</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>(resid)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          
+               Python          R        SQL
+  Pemula   2.00562686 2.28440645 0.63692322
+  Menengah 0.17726602 0.22414064 0.51840626
+  Lanjut   1.87003549 2.60731482 0.07610846</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>sel_max <span class="ot">&lt;-</span> <span class="fu">which</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abs</span>(resid) <span class="sc">==</span> <span class="fu">max</span>(<span class="fu">abs</span>(resid)),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">arr.ind =</span> <span class="cn">TRUE</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>sel_max</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       row col
+Lanjut   3   2</code></pre>
+</div>
+</div>
+<p>Jawab:</p>
+<ol type="1">
+<li>Sel mana yang memiliki nilai (||) terbesar?</li>
+<li>Apakah observed pada sel itu lebih besar atau lebih kecil daripada expected?</li>
+<li>Apa arti substantif pola tersebut dalam konteks <code>PengalamanCoding × ToolFavorit</code>?</li>
+</ol>
+<div class="answer-box">
+<p><strong>Interpretasi residual</strong></p>
+<ol type="1">
+<li>Sel yang memiliki nilai ∣Pearson residual∣|\text{Pearson residual}| terbesar adalah <strong>Lanjut × R</strong>, dengan Pearson residual sekitar <strong>-2,607</strong>.</li>
+<li>Nilai residual negatif menunjukkan bahwa observed lebih kecil daripada expected. Pada kelompok Lanjut yang memilih R, observed = <strong>3</strong>, sedangkan expected ≈ <strong>12,051</strong>.</li>
+<li>Secara substantif, mahasiswa dengan pengalaman coding Lanjut yang memilih R muncul jauh lebih sedikit daripada jumlah yang diharapkan jika pengalaman coding dan tool favorit tidak berasosiasi. Sebaliknya, kelompok Pemula yang memilih R memiliki residual positif sebesar sekitar 2,284, yang menunjukkan jumlah observed lebih tinggi daripada expected.</li>
+</ol>
+</div>
+</section>
+<section id="fisher-sebagai-alternatif" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> 5. Fisher sebagai Alternatif</h1>
+<p>Jawab singkat.</p>
+<ol type="1">
+<li>Dalam kondisi seperti apa <code>fisher.test()</code> layak dipertimbangkan?</li>
+<li>Mengapa Fisher sering digunakan pada tabel 2×2 dengan sampel kecil atau expected count sangat rendah?</li>
+<li>Apakah dataset utama tugas ini perlu langsung diganti ke Fisher? Jelaskan berdasarkan hasil diagnosis expected count Anda.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Petunjuk
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fisher.test</span>(tab)</span></code></pre></div>
+<p>Tidak perlu menjalankan Fisher pada dataset utama jika diagnosis menunjukkan pendekatan Chi-Square sudah memadai.</p>
+</div>
+</div>
+<div class="answer-box">
+<p><strong>Jawaban Anda</strong></p>
+<ol type="1">
+<li><code>fisher.test()</code> dapat dipertimbangkan ketika ukuran sampel kecil atau terdapat expected count yang rendah sehingga pendekatan Chi-Square kurang sesuai. Fisher memberikan pendekatan uji exact yang tidak bergantung pada pendekatan asimtotik Chi-Square.</li>
+<li>Fisher sering digunakan pada tabel 2×2 dengan sampel kecil atau expected count sangat rendah karena probabilitas tabel dihitung secara exact berdasarkan distribusi yang sesuai dengan total marginal.</li>
+<li>Dataset utama tugas ini tidak perlu langsung diganti ke Fisher karena hasil diagnosis menunjukkan bahwa seluruh expected count berada di atas 5. Nilai minimum expected count adalah <strong>10,2436</strong>, sehingga asumsi expected count untuk pendekatan Chi-Square terpenuhi.</li>
+</ol>
+</div>
+</section>
+<section id="pelaporan-dan-kesimpulan" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> 6. Pelaporan dan Kesimpulan</h1>
+<p>Laporkan hasil utama dengan format:</p>
+<blockquote class="blockquote">
+<p><strong>χ²(df, N = n) = nilai, p = nilai</strong></p>
+</blockquote>
+<p>Kemudian tuliskan <strong>3 kalimat</strong>:</p>
+<ol type="1">
+<li>keputusan terhadap H₀ dan apakah terdapat bukti asosiasi;</li>
+<li>satu pola substantif berdasarkan Pearson residual;</li>
+<li>satu kalimat kehati-hatian bahwa hasil menunjukkan <strong>asosiasi</strong>, bukan kausalitas.</li>
+</ol>
+<div class="answer-box">
+<p><strong>Pelaporan akhir</strong></p>
+<ul>
+<li>χ²(4, N = 156) = 20.298, p &lt; 0,001</li>
+</ul>
+<ol type="1">
+<li>H₀ ditolak karena nilai p-value sebesar 0,000436 lebih kecil dari 0,05, sehingga terdapat bukti statistik adanya asosiasi antara tingkat pengalaman coding dan tool analitik favorit mahasiswa.</li>
+<li>Berdasarkan Pearson residual, penyimpangan terbesar terdapat pada kelompok <strong>Lanjut × R</strong>, dengan residual sekitar -2,607. Artinya, jumlah mahasiswa Lanjut yang memilih R lebih sedikit daripada jumlah yang diharapkan jika kedua variabel tidak berasosiasi.</li>
+<li>Hasil ini menunjukkan asosiasi antara pengalaman coding dan tool favorit, bukan hubungan sebab-akibat. Oleh karena itu, hasil uji tidak dapat digunakan untuk menyimpulkan bahwa tingkat pengalaman coding menyebabkan seseorang memilih tool tertentu.</li>
+</ol>
 </div>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2924,97 +2803,21 @@ Levels: Tidak Puas &lt; Cukup &lt; Puas &lt; Sangat Puas</code></pre>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Penting
+<span class="screen-reader-only">Penting</span>Ingat
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Gunakan bahasa deskriptif. Jangan langsung menyimpulkan adanya hubungan signifikan atau sebab-akibat.</p>
-</div>
-</div>
-</section>
-<section id="visualisasi-kategorik" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> 6. Visualisasi Kategorik</h1>
-<p>Variabel yang divisualisasikan:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> identitas<span class="sc">$</span>visualisasi[<span class="dv">1</span>]</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Variabel grafik :&quot;</span>, v, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Variabel grafik : Gender </code></pre>
-</div>
-</div>
-<p>Buat <strong>satu grafik batang</strong> seperti yang telah dipelajari pada Pertemuan 1.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Petunjuk kode
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(..., <span class="fu">aes</span>(<span class="at">x =</span> ...)) <span class="sc">+</span></span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(...)</span></code></pre></div>
-<p>Sesuaikan objek data, variabel, judul, dan label sumbu.</p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> identitas<span class="sc">$</span>visualisasi[<span class="dv">1</span>]</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_tugas1_241061003, <span class="fu">aes</span>(<span class="at">x =</span> .data[[v]], <span class="at">fill =</span> .data[[v]])) <span class="sc">+</span></span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#F8BBD0&quot;</span>, <span class="st">&quot;#D1C4E9&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">&quot;Distribusi&quot;</span>, v),</span>
-<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> v,</span>
-<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Frekuensi&quot;</span></span>
-<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span></span>
-<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img role="img" src="data:image/png;base64,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" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Tuliskan <strong>satu kalimat</strong> interpretasi grafik.</p>
-<div class="answer-box">
-<p><strong>Interpretasi Anda</strong></p>
-<p>Grafik menunjukkan bahwa kategori <strong>L</strong> memiliki frekuensi lebih tinggi dibandingkan kategori <strong>P</strong> pada variabel Gender. Kategori L berjumlah <strong>51 data</strong>, sedangkan kategori P berjumlah <strong>49 data</strong>.</p>
-<p>Grafik menunjukkan bahwa kategori L memiliki frekuensi paling tinggi dibandingkan kategori lainnya pada variabel Gender.</p>
-</div>
-</section>
-<section id="kesimpulan" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> 7. Kesimpulan</h1>
-<p>Tuliskan <strong>3 poin kesimpulan singkat</strong> berdasarkan hasil analisis.</p>
-<p>Setiap kesimpulan harus:</p>
 <ul>
-<li>didukung oleh output yang telah Anda hasilkan;</li>
-<li>menggunakan angka yang relevan;</li>
-<li>ditulis dengan bahasa Anda sendiri;</li>
-<li>tidak menggunakan klaim sebab-akibat.</li>
+<li><em>p-value</em> bukan probabilitas bahwa H₀ benar.</li>
+<li>Hasil signifikan tidak otomatis berarti asosiasi kuat.</li>
+<li>Pearson residual menunjukkan <strong>di mana penyimpangan terjadi</strong>.</li>
+<li>Kekuatan asosiasi dibahas pada Pertemuan 4.</li>
 </ul>
-<div class="answer-box">
-<p><strong>Kesimpulan Anda</strong></p>
-<ol type="1">
-<li>Berdasarkan analisis Gender, kategori <strong>L</strong> memiliki frekuensi sebanyak <strong>51 data (51%)</strong>, sedangkan kategori <strong>P</strong> sebanyak <strong>49 data (49%)</strong>.</li>
-<li>Pada variabel Kepuasan, kategori <strong>Puas</strong> memiliki proporsi tertinggi yaitu <strong>33,67%</strong>, diikuti kategori <strong>Sangat Puas sebesar 32,65%</strong>, <strong>Cukup sebesar 23,47%</strong>, dan <strong>Tidak Puas sebesar 10,20%</strong>.</li>
-<li>Berdasarkan tabel silang Gender dan ModaBelajar, kategori <strong>L</strong> paling banyak menggunakan <strong>Praktik sebesar 37,25%</strong>, sedangkan kategori <strong>P</strong> paling banyak menggunakan <strong>Video sebesar 32,65%</strong>.</li>
-</ol>
+</div>
 </div>
 <div class="footer-note">
-<p><strong>Analisis Data Kategori — Tugas 1</strong><br>
-Predict → Run → Inspect → Explain</p>
+<p><strong>Analisis Data Kategori — Tugas 3</strong><br>
+Predict → Calculate → Run → Diagnose → Explain</p>
 </div>
 </section>
 

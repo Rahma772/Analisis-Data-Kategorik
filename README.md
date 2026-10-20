@@ -1,8 +1,3 @@
-# Analisis-Data-Kategorik
-1. [Tugas 1 : Pengantar Analisis Data Kategorik](https://rahma772.github.io/Analisis-Data-Kategorik/P1_241061003 (1))
-2. [Tugas 2 : Praktikum](https://rahma772.github.io/Analisis-Data-Kategorik/P1_241061003)
-3. [Tugas 3 : Praktikum](https://rahma772.github.io/Analisis-Data-Kategorik/P3_241061003)
-
 
 <div align="center">
 
@@ -96,9 +91,9 @@ The goal is to develop a stronger understanding of statistical methods and build
 
 | No. | Project | Description | Access |
 |:---:|---|---|:---:|
-| 01 | Introduction to Categorical Data Analysis | Fundamental concepts and introduction to categorical data | [View ↗](https://rahma772.github.io/Analisis-Data-Kategorik/P1_241061003%20(1)) |
+| 01 | Introduction to Categorical Data Analysis | Fundamental concepts and introduction to categorical data | [View ↗](https://rahma772.github.io/Analisis-Data-Kategorik/P1_241061003/) |
 | 02 | Practical Assignment 1 | Statistical computing and practical implementation | [View ↗](https://rahma772.github.io/Analisis-Data-Kategorik/P1_241061003) |
-| 03 | Practical Assignment 2 | Further exploration through statistical exercises | [View ↗](https://rahma772.github.io/Analisis-Data-Kategorik/P3_241061003) |
+| 03 | Practical Assignment 2 | Further exploration through statistical exercises | [View ↗](https://rahma772.github.io/Analisis-Data-Kategorik/P3_241061003)  |
 
 ## 🧰 Tools & Technologies
 

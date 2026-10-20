@@ -29,7 +29,7 @@ Repository ini berisi kumpulan tugas dan praktikum mata kuliah **Analisis Data K
 
 | No. | Materi | Tautan |
 |:---:|---|---|
-| 01 | Pengantar Analisis Data Kategorik | [📄 Lihat Tugas 1][(https://rahma772.github.io/Analisis-Data-Kategorik/P1_241061003%20(1))](https://rahma772.github.io/Analisis-Data-Kategorik/P1_241061003/) |
+| 01 | Pengantar Analisis Data Kategorik | [📄 Lihat Tugas 1](https://rahma772.github.io/Analisis-Data-Kategorik/P1_241061003/)|
 | 02 | Praktikum 1 | [💻 Lihat Tugas 2](https://rahma772.github.io/Analisis-Data-Kategorik/P1_241061003) |
 | 03 | Praktikum 2 | [💻 Lihat Tugas 3](https://rahma772.github.io/Analisis-Data-Kategorik/P3_241061003) |
 
